@@ -29,13 +29,13 @@ task filter_unmapped {
     input{
         File bam
     }
-    command <<<
         String bam_basename = basename(bam, '.bam')
+    command <<<
         samtools view -f 4 ~{bam} > ~{bam_basename}.unmapped.bam
     >>>
     output{
         File bam_unmapped = '~{bam_basename}.unmapped.bam'
-        String bam_basename
+        String bam_basename = basename(bam, '.bam')
     }
 }
 
