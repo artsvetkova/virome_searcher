@@ -29,12 +29,12 @@ task filter_unmapped {
     input{
         File bam
     }
-        String bam_basename = basename(bam, '.bam')
+
     command <<<
-        samtools view -f 4 ~{bam} > ~{bam_basename}.unmapped.bam
+        samtools view -f 4 ~{bam} > ~{basename(bam, '.bam')}.unmapped.bam
     >>>
     output{
-        File bam_unmapped = '~{bam_basename}.unmapped.bam'
+        File bam_unmapped = '~{basename(bam, '.bam')}.unmapped.bam'
         String bam_basename = basename(bam, '.bam')
     }
 }
@@ -46,7 +46,7 @@ task convert_to_fastq {
         String bam_basename
     }
     command <<<
-        samtools fastq ~{bam_basename}.unmapped.bam > ~{bam_basename}.unmapped.fastq
+        samtools fastq ~{bam_unmapped} > ~{bam_basename}.unmapped.fastq
     >>>
     output{
         File fastq_unmapped = '~{bam_basename}.unmapped.fastq'
