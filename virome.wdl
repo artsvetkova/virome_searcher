@@ -4,7 +4,6 @@ workflow {
     input{
         File bam
         String db_dir
-        File fastq_unmapped
         Int thread
     }
     call filter_unmapped {
