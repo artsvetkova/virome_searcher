@@ -1,6 +1,6 @@
 version 1.0
 
-workflow {
+workflow virome {
     input{
         File bam
         String db_dir
@@ -12,18 +12,25 @@ workflow {
     }
     call convert_to_fastq {
         input:
-            bam_unmapped = filter_unmapped.bam_unmapped
+            bam_unmapped = filter_unmapped.bam_unmapped,
             bam_basename = filter_unmapped.bam_basename
     }
-    call 
+    call run_kraken {
+        input:
+            db_dir = db_dir,
+            fastq_unmapped = convert_to_fastq.fastq_unmapped,
+            bam_basename = filter_unmapped.bam_basename,
+            thread = thread
+    }
 }
+
 
 task filter_unmapped {
     input{
         File bam
     }
-    String bam_basename = basename(bam, '.bam')
     command <<<
+        String bam_basename = basename(bam, '.bam')
         samtools view -f 4 ~{bam} > ~{bam_basename}.unmapped.bam
     >>>
     output{
@@ -31,6 +38,7 @@ task filter_unmapped {
         String bam_basename
     }
 }
+
 
 task convert_to_fastq {
     input{
@@ -44,6 +52,7 @@ task convert_to_fastq {
         File fastq_unmapped = '~{bam_basename}.unmapped.fastq'
     }
 }
+
 
 task run_kraken {
     input{
@@ -60,6 +69,7 @@ task run_kraken {
         File k_output = '~{bam_basename}.k2_output.txt'
     }
 }
+
 
 # task extract_viral_seqIDs {
 #     input{
