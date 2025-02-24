@@ -73,7 +73,7 @@ task run_kraken {
 
 # task extract_viral_seqIDs {
 #     input{
-#             # kraken output
+#             # kraken output(s?)
 #             File fastq_unmapped
 #             # viral taxID == 10239
 #     }
