@@ -4,7 +4,6 @@ workflow {
     input{
         File bam
         String db_dir
-        File db_dir
         File fastq_unmapped
         Int thread
     }
@@ -49,7 +48,7 @@ task convert_to_fastq {
 
 task run_kraken {
     input{
-            File db_dir
+            String db_dir
             File fastq_unmapped
             String bam_basename
             Int thread
@@ -63,20 +62,20 @@ task run_kraken {
     }
 }
 
-task extract_viral_seqIDs {
-    input{
-            # kraken output
-            File fastq_unmapped
-            # viral taxID == 10239
-    }
-    command <<<
-        python extract_kraken_reads.py 
-    >>>
-    output{
+# task extract_viral_seqIDs {
+#     input{
+#             # kraken output
+#             File fastq_unmapped
+#             # viral taxID == 10239
+#     }
+#     command <<<
+#         python extract_kraken_reads.py 
+#     >>>
+#     output{
 
-    }
-}
+#     }
+# }
 
-task extract_viral_reads {
+# task extract_viral_reads {
 
-}
+# }
