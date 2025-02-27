@@ -66,7 +66,7 @@ task run_kraken {
     >>>
     output{
         File k2_report = '~{bam_basename}.k2_report.txt'
-        File k_output = '~{bam_basename}.k2_output.txt'
+        File k2_output = '~{bam_basename}.k2_output.txt'
     }
 }
 
