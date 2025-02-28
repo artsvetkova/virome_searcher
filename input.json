@@ -1,0 +1,5 @@
+{
+    "virome.bam" : "/PATH_TO_INPUT_DIR/input.bam",
+    "virome.db_dir": "/PATH_TO_INPUT_DIR/viral_db_dir",
+    "virome.thread": 2
+}
