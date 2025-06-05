@@ -1,0 +1,37 @@
+Bootstrap: library
+From: kcdodd/basis/ubuntu-22.04-basis:0.0.4
+
+%environment
+  export PATH=$PATH:/opt/samtools/bin:/opt/kraken2
+  export JAVA_HOME=/opt/java
+  export PATH=$PATH:$JAVA_HOME/bin
+  export PATH=$PATH:/opt/cromwell/bin
+
+%post
+  apt-get update && apt-get install -y \
+    wget \
+    curl \
+    unzip \
+    git \
+    build-essential \
+    openjdk-17-jre-headless \
+    samtools
+    
+  cd /opt && \
+    git clone https://github.com/DerrickWood/kraken2.git && \
+    cd kraken2 && ./install_kraken2.sh /opt/kraken2
+    
+  mkdir -p /opt/cromwell && \
+    cd /opt/cromwell && \
+    wget https://github.com/broadinstitute/cromwell/releases/download/89/cromwell-89.jar 
+  mkdir -p /opt/cromwell/bin && \
+    cd /opt/cromwell/bin && \
+    touch cromwell && \
+    echo '#!/bin/bash' >> cromwell && \
+    echo 'exec java -jar /opt/cromwell/cromwell-89.jar "$@"' >> cromwell && \
+    chmod +x cromwell
+
+# %test
+
+%runscript
+  exec cromwell "$@"
